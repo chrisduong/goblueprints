@@ -17,6 +17,8 @@ type client struct {
 	room *room
 }
 
+// The read function constantly check if there is any message sent to Client,
+// then it will forward to the room the client belong to
 func (c *client) read() {
 	defer c.socket.Close()
 	for {
@@ -28,6 +30,8 @@ func (c *client) read() {
 	}
 }
 
+// The write function constantly check if the Client need to
+// send any messages, then it writes to the websocket Server
 func (c *client) write() {
 	defer c.socket.Close()
 	for msg := range c.send {
