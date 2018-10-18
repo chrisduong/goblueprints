@@ -30,8 +30,8 @@ func (c *client) read() {
 	}
 }
 
-// The write function constantly check if there is any messages
-// in send queue, to send to Client over websocket
+// The write function check in Send queue if there is any messages
+// to send to Client over websocket
 func (c *client) write() {
 	defer c.socket.Close()
 	for msg := range c.send {
