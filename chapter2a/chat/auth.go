@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/google/go-github/github"
+	"github.com/stretchr/objx"
 	"golang.org/x/oauth2"
 	githuboauth "golang.org/x/oauth2/github"
 )
@@ -87,7 +88,7 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 	token, err := oauthConf.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		fmt.Printf("oauthConf.Exchange() failed with '%s'\n", err)
+		log.Printf("oauthConf.Exchange() failed with '%s'\n", err)
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
@@ -96,10 +97,19 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	client := github.NewClient(oauthClient)
 	user, _, err := client.Users.Get(oauth2.NoContext, "")
 	if err != nil {
-		fmt.Printf("client.Users.Get() faled with '%s'\n", err)
+		log.Printf("client.Users.Get() faled with '%s'\n", err)
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-	fmt.Printf("Logged in as GitHub user: %s\n", *user.Login)
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+
+	// save some data
+	authCookieValue := objx.New(map[string]interface{}{
+		"name": *user.Login,
+	}).MustBase64()
+	http.SetCookie(w, &http.Cookie{
+		Name:  "auth",
+		Value: authCookieValue,
+		Path:  "/"})
+	log.Printf("Logged in as GitHub user: %s\n", *user.Login)
+	http.Redirect(w, r, "/chat", http.StatusTemporaryRedirect)
 }
