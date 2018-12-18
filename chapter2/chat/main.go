@@ -47,7 +47,8 @@ func main() {
 	flag.Parse() // parse the flags
 
 	// setup gomniauth
-	gomniauth.SetSecurityKey("98dfbg7iu2nb4uywevihjw4tuiyub34noilk")
+	// No need
+	// gomniauth.SetSecurityKey("98dfbg7iu2nb4uywevihjw4tuiyub34noilk")
 	gomniauth.WithProviders(
 		github.New("3d1e6ba69036e0624b61", "7e8938928d802e7582908a5eadaaaf22d64babf1", "http://localhost:8080/auth/callback/github"),
 		google.New("44166123467-o6brs9o43tgaek9q12lef07bk48m3jmf.apps.googleusercontent.com", "rpXpakthfjPVoFGvcf9CVCu7", "http://localhost:8080/auth/callback/google"),
@@ -72,3 +73,4 @@ func main() {
 	}
 
 }
+
