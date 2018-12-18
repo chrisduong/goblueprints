@@ -113,3 +113,4 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Logged in as GitHub user: %s\n", *user.Login)
 	http.Redirect(w, r, "/chat", http.StatusTemporaryRedirect)
 }
+
