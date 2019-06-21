@@ -1,5 +1,7 @@
 package main
 
+// NOTE: some functions of gomniauth are missing.
+
 import (
 	"fmt"
 	"net/http"
